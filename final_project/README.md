@@ -4,7 +4,7 @@ Project Title: Flashcard App
 
 ## Video Demo
 
-` <github.com> `
+<https://www.youtube.com/>
 
 ## Description
 
