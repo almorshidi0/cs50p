@@ -1,44 +1,37 @@
-# Flashcard App
+# Flashcard Review Program README
 
-Project Title: Flashcard App
+## Overview
+
+Welcome to the Flashcard Review Program! This project serves as the final assignment for the CS50's Introduction to Programming with Python course ([CS50 Python](https://cs50.harvard.edu/python/2022/)). The program is designed to facilitate interactive flashcard reviews, allowing users to create, edit, and reinforce their knowledge.
 
 ## Video Demo
 
-<https://www.youtube.com/>
+To get a visual demonstration of the Flashcard Review Program, please watch this [video demo](#). This video offers a walkthrough of the program, showcasing key features such as card creation, editing, reviewing, and progress tracking. The demo aims to provide a hands-on understanding of the program's functionalities.
 
-## Description
+## Project Description
 
-This Python program implements a user-friendly flashcard application to aid in studying and memorizing information. It allows users to:
+The Flashcard Review Program is implemented in Python and structured around a `Card` class, handling flashcard properties and functionalities. The main file, `project.py`, encompasses file handling, card manipulation, and the program's main loop. The accompanying `test_project.py` file contains unit tests to ensure the reliability of the implemented functions.
 
-* **Create new flashcards:** Users can define new cards by entering questions and answers.
-* **Load existing flashcards:** The app can load data from text files containing flashcards in a specific format.
-* **Review flashcards:** The program presents flashcards in a randomized order, prompting users to answer questions. Based on their responses, the app adjusts the repetition frequency of each card, focusing on those requiring more practice.
-* **Edit existing flashcards:** Users can modify the content of existing cards within the app.
-* **Add new cards:** Users can continuously expand their flashcard collection by adding new questions and answers.
-* **Track progress:** The app provides an overview of the user's progress, indicating the number of reviewed cards and those still requiring practice.
+## Card Class
 
-## Key Features
+The `Card` class is central to the program, representing flashcards with properties for questions, answers, and iteration counts. It includes methods to maintain data integrity and provide a readable string representation.
 
-* **Simple and intuitive interface:** The program offers a user-friendly menu-driven interface for easy navigation and interaction.
-* **Flexible data storage:** Flashcards are stored in plain text files, ensuring compatibility and portability across different systems.
-* **Adaptive learning:** The app adjusts the repetition frequency of cards based on user performance, prioritizing cards that need more reinforcement.
-* **Offline functionality:** The program operates entirely offline, eliminating the need for an internet connection.
+## Functions in project.py
 
-## Getting Started
+The `project.py` file hosts various functions catering to file validation, user interaction, and flashcard manipulation. Notable functions include file validation (`is_valid_flashcards_file`), card creation (`add_card`), reviewing (`review_cards`), and progress tracking (`track_progress`).
 
-1. **Prerequisites:** Ensure you have Python 3 installed on your system.
-2. **Download the files:** Download the project files, including project.py, test_project.py, and requirements.txt.
-3. **Run the program:** Open a terminal or command prompt, navigate to the project directory, and execute `python project.py` or `python3 project.py`.
+## Design Choices
 
-## Using the App
+The program's design emphasizes user interaction and progress tracking. Noteworthy design choices include:
 
-* The program prompts you to enter the filename for your flashcards. You can either specify an existing file or create a new one.
-* The main menu offers options to review cards, add new cards, edit existing cards, track progress, or exit the program.
-* When reviewing cards, the app displays the question and prompts you for an answer. Based on your response, it provides feedback and adjusts the card's repetition frequency.
+- **File Validation**: Ensuring file validity to prevent errors during loading.
+- **User Interaction**: Providing a user-friendly menu for an intuitive experience.
+- **Card Iterations**: Utilizing iteration counts to track user progress during flashcard reviews.
 
-## Customization
+## Testing
 
-* You can modify the format of the flashcard text files to suit your specific needs.
-* The program offers flexibility in adding new features and functionalities based on your preferences.
+Unit tests in `test_project.py` validate the correctness of the Card class and various functions in `project.py`. These tests are integral to maintaining the reliability of the program's functionality.
 
-This flashcard app is a valuable tool for anyone seeking to enhance their learning and memory retention through an interactive and personalized approach.
+## Conclusion
+
+The Flashcard Review Program is an educational tool designed help enhance your learning experience of any subject of your choice. Dive into the code, explore the functionalities, and consider watching the video demo for a hands-on experience, and feel free to reuse and edit the code to match your own requirements or taste.
