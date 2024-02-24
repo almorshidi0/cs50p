@@ -3,13 +3,13 @@ import sys
 
 # Card object
 class Card:
-    def __init__(self, question, answer, iterations=1):
+    def __init__(self, question="question", answer="answer", iterations=1):
         self.question = question
         self.answer = answer
         self.iterations = iterations  # Repetition iterations (1-4)
         
     def __str__(self):
-        return str(self.question) + "\n\t" + str(self.answer)
+        return str(self.question) + " --> " + str(self.answer)
     
     @property
     def question(self):
@@ -38,14 +38,14 @@ class Card:
 
 # Check if file exists and is valid
 def is_valid_flashcards_file(filename):
+    if ".txt" not in filename:
+        return False
     try:
         with open(filename) as f:
             # Check if file contains valid card data
             for line in f:
-                if line.startswith("#"):
-                    continue  # Skip comment lines
-                elif line == "":
-                    continue
+                if line.startswith("#") or line.isspace() or line == "":
+                    continue  # Skip comment lines, white space lines, and empty lines
                 question, answer = line.strip().split(",")
                 pass
             return True
@@ -57,7 +57,7 @@ def is_valid_flashcards_file(filename):
 # Create a new file with initial content
 def create_new_file(filename):
     with open(filename, "w") as f:
-        f.write("# This is a flashcard file.")
+        f.write("# This is a flashcard file.\n")
         f.write("# Add your cards in the format: question,answer")
 
 # Load cards from a file
