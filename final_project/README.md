@@ -26,8 +26,8 @@ This Python program implements a user-friendly flashcard application to aid in s
 
 ## Getting Started
 
-1. **Prerequisites:** Ensure you have Python 3 installed on your system.
-2. **Download the files:** Download the project files, including project.py, test_project.py, and requirements.txt.
+1. **Prerequisites:** Ensure you have `Python 3` installed on your system.
+2. **Download the files:** Download the project files, including `project.py`, `test_project.py`, and `requirements.txt`.
 3. **Run the program:** Open a terminal or command prompt, navigate to the project directory, and execute `python project.py` or `python3 project.py`.
 
 ## Using the App
