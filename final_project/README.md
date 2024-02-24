@@ -1,41 +1,63 @@
-# Flashcard APP
+# Flashcard Review Program: Empowering Your Learning Journey
 
-## Overview
+## Introduction
 
-Welcome to the Flashcard Review Program! This project serves as the final assignment for the CS50's Introduction to Programming with Python course ([CS50 Python](https://cs50.harvard.edu/python/2022/)). The program is designed to facilitate interactive flashcard reviews, allowing users to create, edit, and reinforce their knowledge.
+Welcome to the **Flashcard Review Program**, a comprehensive and user-friendly learning tool developed using `Python`. This project serves as the final assignment for CS50's Introduction to Programming with Python course ([CS50 Python](https://cs50.harvard.edu/python/2022/)), offering an interactive platform to strengthen your knowledge through efficient flashcard creation, review, and management.
 
 ## Video Demo
 
 To get a visual demonstration of the Flashcard Review Program, please watch this [video demo](#). This video offers a walkthrough of the program, showcasing key features such as card creation, editing, reviewing, and progress tracking. The demo aims to provide a hands-on understanding of the program's functionalities.
 
-## Project Description
+## Project Overview
 
-The Flashcard Review Program is implemented in Python and structured around a `Card` class, handling flashcard properties and functionalities. The main file, `project.py`, encompasses file handling, card manipulation, and the program's main loop. The accompanying `test_project.py` file contains unit tests to ensure the reliability of the implemented functions.
+This program empowers you to:
 
-## Card Class
+* **Craft insightful flashcards:** Effortlessly create new flashcards tailored to your specific learning objectives. You have complete control over the questions, answers.
+* **Engage in interactive review sessions:** The program shuffles your flashcards to prevent memorization based on sequence and tests your understanding by displaying the card's question. Based on your response, it provides immediate feedback and adjusts the card's repetition frequency to prioritize those requiring more practice. This adaptive learning approach optimizes your study sessions by focusing on areas needing reinforcement.
+* **Effectively track your progress:** Gain valuable insights into your learning journey by monitoring statistics like the number of reviewed cards and those remaining. This clear overview allows you to gauge your progress and target areas for improvement.
+* **Navigate seamlessly:** The program boasts a user-friendly menu-driven interface, enabling intuitive interaction and effortless access to functionalities.
 
-The `Card` class is central to the program, representing flashcards with properties for questions, answers, and iteration counts. It includes methods to maintain data integrity and provide a readable string representation.
+## Functionality Breakdown
 
-## Functions in project.py
+**1. Building Blocks:**
 
-The `project.py` file hosts various functions catering to file validation, user interaction, and flashcard manipulation. Notable functions include file validation (`is_valid_flashcards_file`), card creation (`add_card`), reviewing (`review_cards`), and progress tracking (`track_progress`).
+* **Card Class:** At the core lies the `Card` class, meticulously designed to represent individual flashcards. This class encapsulates essential attributes like the `question`, `answer`, `strength` count, and `interval` count (both used for adaptive learning). It also includes methods to ensure data integrity and present the card's information in a user-friendly format.
 
-## Design Choices
+**2. Core Components:**
 
-The program's design emphasizes user interaction and progress tracking. Noteworthy design choices include
+* **project.py:** This central file governs the program's logic and workflow. It encompasses functions essential for:
+  * **File Management:** Validating the integrity of flashcard data files ensures seamless program operation.
+  * **User Interaction:** The program employs a clear and concise menu, guiding users through various functionalities like creating, editing, reviewing, and tracking progress.
+  * **Flashcard Operations:** A suite of functions empower users to add new cards, edit existing ones, and review shuffled cards for optimal knowledge assessment. The review process incorporates adaptive learning principles by adjusting card repetition based on user performance.
+  * **Tracking Progress:** Users can access real-time statistics concerning their learning journey, including the number of reviewed and remaining cards.
 
-1. **Prerequisites:** Ensure you have `Python 3` installed on your system.
-2. **Download the files:** Download the project files, including `project.py`, `test_project.py`, and `requirements.txt`.
-3. **Run the program:** Open a terminal or command prompt, navigate to the project directory, and execute `python project.py` or `python3 project.py`.
+**3. Ensuring Reliability:**
 
-- **File Validation**: Ensuring file validity to prevent errors during loading.
-- **User Interaction**: Providing a user-friendly menu for an intuitive experience.
-- **Card Iterations**: Utilizing iteration counts to track user progress during flashcard reviews.
+* **test_project.py:** In the pursuit of robust and dependable functionality, rigorous unit testing is implemented within the `test_project.py` file. This collection of tests is thoughtfully designed to validate the precise functioning of the `Card` class and various critical functions housed within `project.py`. Leveraging the `pytest` library, these tests serve as a robust safety net, offering an additional layer of assurance regarding the program's reliability and optimal performance.
 
-## Testing
+To execute these tests locally and affirm the integrity of the program, utilize the following command within the `final_project` folder of your cloned repository:
 
-Unit tests in `test_project.py` validate the correctness of the Card class and various functions in `project.py`. These tests are integral to maintaining the reliability of the program's functionality.
+```bash
+pytest test_projects.py
+```
 
-## Conclusion
+## Beyond the Basics
 
-The Flashcard Review Program is an educational tool designed help enhance your learning experience of any subject of your choice. Dive into the code, explore the functionalities, and consider watching the video demo for a hands-on experience, and feel free to reuse and edit the code to match your own requirements or taste.
+* **Adaptability:** The open-source nature of this project presents exciting possibilities for customization. You can tailor the code to suit your specific learning needs, incorporate new features, or adjust the overall aesthetics. This flexibility empowers you to create a personalized learning companion.
+
+## Getting Started
+
+* **Prerequisites:** Ensure your system is equipped with Python 3 to effectively launch the program. Once Python 3 is installed, use the following command to guarantee all the necessary requirements for using and validating the program are in place:
+
+```bash
+pip install -r requirements.txt
+```
+
+* **Obtain the Files:** Clone the project repository from GitHub and navigate to the final_project folder:
+
+```bash
+git clone https://github.com/almorshidi0/cs50p.git
+cd cs50p/final_project
+```
+
+This will provide you with the essential files and structure to seamlessly run and explore the Flashcard Review Program.
