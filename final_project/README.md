@@ -22,7 +22,13 @@ The `project.py` file hosts various functions catering to file validation, user 
 
 ## Design Choices
 
+<<<<<<< HEAD
 The program's design emphasizes user interaction and progress tracking. Noteworthy design choices include:
+=======
+1. **Prerequisites:** Ensure you have `Python 3` installed on your system.
+2. **Download the files:** Download the project files, including `project.py`, `test_project.py`, and `requirements.txt`.
+3. **Run the program:** Open a terminal or command prompt, navigate to the project directory, and execute `python project.py` or `python3 project.py`.
+>>>>>>> 0ca88d33d65d437df6954c3c81919935805ab03a
 
 - **File Validation**: Ensuring file validity to prevent errors during loading.
 - **User Interaction**: Providing a user-friendly menu for an intuitive experience.
