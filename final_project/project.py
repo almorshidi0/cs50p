@@ -266,15 +266,16 @@ def main():
     Returns:
     None
     """
+    program_done = False # A flag to determine wether to quit the program
+    file_menu_done = False # A flag to determine wether to close the current file
+    new = False # A flag to determine wether a file is new
+    
     # Welcome the user
     print("===== Flashcard Review Program =====")
     print("Welcome to an interactive learning experience!")
     print("------------------------------------------------------------------------\n")
     
-    while True:
-        program_done = False # A flag to determine wether to quit the program
-        file_done = False # A flag to determine wether to close the current file
-        new = False # A flag to determine wether a file is new
+    while not program_done:
         option = input("Do you want to use your own flashcard file or another existing flashcard file (y/n)? ").strip()
         if option.lower() == "y":
             print("Make sure the file is formatted as follows: ")
@@ -283,27 +284,31 @@ def main():
             print("Each flashcard must be on a seperate line.")
             print("The 2 numerical values '1|1' are default values.")
             print("------------------------------------------------------------------------\n")
-            while not program_done:
+            while not file_menu_done:
                 print("Type ':q' to exit the program, or ':b' to go back to the previous menu.")
                 filename = input("Enter the name of an existing flashcards file: ").strip()
                 if filename.lower() == ":q":
                     print("Exiting the Flashcard Review Program. Goodbye!")
                     program_done = True
                     break
+                elif filename.lower() == ":b":
+                    print("")
+                    break
+                
                 if ".txt" not in filename:
                     filename = filename + ".txt"
                 if not is_valid_flashcards_file(filename):
                     filename = filename.replace(".txt", "")
                     print(f"Error: Invalid file '{filename}'.")
-                    file_done = True
-                while not file_done:
+                    file_menu_done = True
+                while not file_menu_done:
                     cards = []
                     # Load cards from existing file (if not new)
                     if not new:
                         cards = load_cards(filename)
                         if cards == []:
                             print("File is empty.")
-                        while not file_done:
+                        while not file_menu_done:
                             print("\nMenu:")
                             print("1. Review cards")
                             print("2. Add a card")
@@ -329,7 +334,7 @@ def main():
                                 track_progress(cards)
                             elif choice == "5":
                                 print("Closing the flashcard file.")
-                                file_done = True
+                                file_menu_done = True
                             else:
                                 print("Invalid choice.")
             
@@ -339,7 +344,7 @@ def main():
             if ".txt" not in filename:
                 filename = filename + ".txt"
             create_new_file(filename)
-            while (not file_done) and new:
+            while (not file_menu_done) and new:
                 print("\nMenu:")
                 print("1. Add a card")
                 print("2. Close file")
@@ -353,7 +358,7 @@ def main():
                     new = False
                 elif choice == "2":
                     print("Closing the flashcard file.")
-                    file_done = True
+                    file_menu_done = True
                 else:
                     print("Invalid choice.")
         else:
