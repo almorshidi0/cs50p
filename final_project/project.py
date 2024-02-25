@@ -175,7 +175,7 @@ def review_cards(cards):
             else:
                 print("Incorrect. The answer is:", card.answer)
                 # Reset card's strength and review interval for incorrect answers
-                card.strength += 1
+                card.strength = 1
                 card.interval = 1
         else:
             card.interval -= 1
@@ -269,87 +269,95 @@ def main():
     # Welcome the user
     print("===== Flashcard Review Program =====")
     print("Welcome to an interactive learning experience!")
+    print("------------------------------------------------------------------------\n")
     
     while True:
-        done = False # A flag to determine wether to quit the program
+        program_done = False # A flag to determine wether to quit the program
+        file_done = False # A flag to determine wether to close the current file
         new = False # A flag to determine wether a file is new
-        # Get filename from user
-        filename = input("Enter the filename for flashcards (:n creates a new file, :q exits the program): ").strip()
+        option = input("Do you want to use your own flashcard file or another existing flashcard file (y/n)? ").strip()
+        if option.lower() == "y":
+            print("Make sure the file is formatted as follows: ")
+            print("\tType your question here|Type the answer|1|1")
+            print("The '|' character is what seperates your questions, answers, and other values.")
+            print("Each flashcard must be on a seperate line.")
+            print("The 2 numerical values '1|1' are default values.")
+            print("------------------------------------------------------------------------\n")
+            while not program_done:
+                print("Type ':q' to exit the program, or ':b' to go back to the previous menu.")
+                filename = input("Enter the name of an existing flashcards file: ").strip()
+                if filename.lower() == ":q":
+                    print("Exiting the Flashcard Review Program. Goodbye!")
+                    program_done = True
+                    break
+                if ".txt" not in filename:
+                    filename = filename + ".txt"
+                if not is_valid_flashcards_file(filename):
+                    filename = filename.replace(".txt", "")
+                    print(f"Error: Invalid file '{filename}'.")
+                    file_done = True
+                while not file_done:
+                    cards = []
+                    # Load cards from existing file (if not new)
+                    if not new:
+                        cards = load_cards(filename)
+                        if cards == []:
+                            print("File is empty.")
+                        while not file_done:
+                            print("\nMenu:")
+                            print("1. Review cards")
+                            print("2. Add a card")
+                            print("3. Edit a card")
+                            print("4. Track progress")
+                            print("5. Close file")
 
-        # Quit the program on user's demand
-        if filename.lower() == ":q":
-            print("Exiting the Flashcard Review Program. Goodbye!")
-            break
-        # Handle new file creation
-        elif filename.lower() == ":n":
+                            choice = input("Enter your choice: ").strip()
+
+                            if choice == "1":
+                                review_cards(cards)
+                                # Save updated cards after review
+                                save_cards(cards, filename)
+                            elif choice == "2":
+                                add_card(cards)
+                                # Save cards after adding a new one
+                                save_cards(cards, filename)
+                            elif choice == "3":
+                                edit_card(cards)
+                                # Save cards after editing
+                                save_cards(cards, filename)
+                            elif choice == "4":
+                                track_progress(cards)
+                            elif choice == "5":
+                                print("Closing the flashcard file.")
+                                file_done = True
+                            else:
+                                print("Invalid choice.")
+            
+        elif option == "n":
             new = True
-            new_filename = input("Enter a filename for the new file: ").strip()
-            if ".txt" not in new_filename:
-                new_filename = new_filename + ".txt"
-            create_new_file(new_filename)
-            filename = new_filename
-        # Check if existing file is valid
-        else:
+            filename = input("Enter a filename for the new file: ").strip()
             if ".txt" not in filename:
                 filename = filename + ".txt"
-            if not is_valid_flashcards_file(filename):
-                filename = filename.replace(".txt", "")
-                sys.exit(f"Error: Invalid file '{filename}'.")
+            create_new_file(filename)
+            while (not file_done) and new:
+                print("\nMenu:")
+                print("1. Add a card")
+                print("2. Close file")
                 
-        while not done:
-            cards = []
-            # Load cards from existing file (if not new)
-            if not new:
-                cards = load_cards(filename)
-                if cards == []:
-                    print("File is empty.")
-                while not done:
-                    print("\nMenu:")
-                    print("1. Review cards")
-                    print("2. Add a card")
-                    print("3. Edit a card")
-                    print("4. Track progress")
-                    print("5. Close file")
+                choice = input("Enter your choice: ").strip()
 
-                    choice = input("Enter your choice: ").strip()
-
-                    if choice == "1":
-                        review_cards(cards)
-                        # Save updated cards after review
-                        save_cards(cards, filename)
-                    elif choice == "2":
-                        add_card(cards)
-                        # Save cards after adding a new one
-                        save_cards(cards, filename)
-                    elif choice == "3":
-                        edit_card(cards)
-                        # Save cards after editing
-                        save_cards(cards, filename)
-                    elif choice == "4":
-                        track_progress(cards)
-                    elif choice == "5":
-                        print("Closing the flashcard file.")
-                        done = True
-                    else:
-                        print("Invalid choice.")
-            else:
-                while (not done) and new:
-                    print("\nMenu:")
-                    print("1. Add a card")
-                    print("2. Close file")
-                    
-                    choice = input("Enter your choice: ").strip()
-
-                    if choice == "1":
-                        add_card(cards)
-                        # Save cards after adding a new one
-                        save_cards(cards, filename)
-                        new = False
-                    elif choice == "2":
-                        print("Closing the flashcard file.")
-                        done = True
-                    else:
-                        print("Invalid choice.")
+                if choice == "1":
+                    add_card(cards)
+                    # Save cards after adding a new one
+                    save_cards(cards, filename)
+                    new = False
+                elif choice == "2":
+                    print("Closing the flashcard file.")
+                    file_done = True
+                else:
+                    print("Invalid choice.")
+        else:
+            print("Invalid choice.")
 
 
 if __name__ == "__main__":

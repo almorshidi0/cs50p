@@ -14,7 +14,7 @@ What is the capital of France?|Paris|2|4
 
 # Another comment line
 Can you name the largest mammal?|Blue Whale|1|1
-
+      
 # Empty line
 What is the powerhouse of the cell?|Mitochondria|3|6
 
