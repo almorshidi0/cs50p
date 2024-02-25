@@ -299,7 +299,7 @@ def main():
                     filename = filename + ".txt"
                 if not is_valid_flashcards_file(filename):
                     filename = filename.replace(".txt", "")
-                    print(f"Error: Invalid file '{filename}'.")
+                    print(f"Error: Invalid file '{filename}'.\n")
                     file_menu_done = True
                 while not file_menu_done:
                     cards = []
@@ -333,10 +333,10 @@ def main():
                             elif choice == "4":
                                 track_progress(cards)
                             elif choice == "5":
-                                print("Closing the flashcard file.")
+                                print("Closing the flashcard file.\n")
                                 file_menu_done = True
                             else:
-                                print("Invalid choice.")
+                                print("Invalid choice.\n")
             
         elif option == "n":
             new = True
@@ -357,12 +357,12 @@ def main():
                     save_cards(cards, filename)
                     new = False
                 elif choice == "2":
-                    print("Closing the flashcard file.")
+                    print("Closing the flashcard file.\n")
                     file_menu_done = True
                 else:
-                    print("Invalid choice.")
+                    print("Invalid choice.\n")
         else:
-            print("Invalid choice.")
+            print("Invalid choice.\n")
 
 
 if __name__ == "__main__":
