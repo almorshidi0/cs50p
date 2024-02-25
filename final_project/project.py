@@ -267,8 +267,6 @@ def main():
     None
     """
     program_done = False # A flag to determine wether to quit the program
-    file_menu_done = False # A flag to determine wether to close the current file
-    new = False # A flag to determine wether a file is new
     
     # Welcome the user
     print("===== Flashcard Review Program =====")
@@ -276,6 +274,8 @@ def main():
     print("------------------------------------------------------------------------\n")
     
     while not program_done:
+        file_menu_done = False # A flag to determine wether to close the current file
+        new = False # A flag to determine wether a file is new
         option = input("Do you want to use your own flashcard file or another existing flashcard file (y/n)? ").strip()
         if option.lower() == "y":
             print("Make sure the file is formatted as follows: ")
