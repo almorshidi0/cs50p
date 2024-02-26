@@ -175,7 +175,7 @@ def review_cards(cards):
             else:
                 print("Incorrect. The answer is:", card.answer)
                 # Reset card's strength and review interval for incorrect answers
-                card.strength += 1
+                card.strength = 1
                 card.interval = 1
         else:
             card.interval -= 1

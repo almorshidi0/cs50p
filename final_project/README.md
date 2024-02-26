@@ -47,7 +47,7 @@ pytest test_projects.py
 
 ## Getting Started
 
-* **Prerequisites:** Ensure your system is equipped with Python 3 to effectively launch the program. Once Python 3 is installed, use the following command to guarantee all the necessary requirements for using and validating the program are in place:
+* **Prerequisites:** Ensure your system is equipped with `Python 3` to effectively launch the program. Once `` isinstalled, use the following command to guarantee all the necessary requirements for using and validating the program are in place:
 
 ```bash
 pip install -r requirements.txt
