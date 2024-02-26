@@ -271,7 +271,7 @@ def main():
     print("Welcome to an interactive learning experience!")
     
     while True:
-        done = False # A flag to determine wether to quit the program
+        done = False # A flag to determine wether to close the current file
         new = False # A flag to determine wether a file is new
         # Get filename from user
         filename = input("Enter the filename for flashcards (:n creates a new file, :q exits the program): ").strip()
