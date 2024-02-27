@@ -179,7 +179,7 @@ def get_deck_name():
     str: User's input for the new deck name.
     """
     while True:
-        deck_name = input(f"{Fore.YELLOW}Deck Name:{Style.RESET_ALL} ").strip().lower()  # Added color to the prompt
+        deck_name = input(f"{Fore.YELLOW}Deck Name:{Style.RESET_ALL} ").strip()  # Added color to the prompt
         exit_program_check(deck_name)
         back_to_main_menu_check(deck_name)
         if not is_valid_deck_name_format(deck_name):
@@ -331,6 +331,7 @@ def change_deck_name(old_deck_name):
         new_file_path = get_deck_file_path(new_deck_name)
         os.rename(old_file_path, new_file_path)
         print(f"Deck '{old_deck_name}' changed to {new_deck_name} {Fore.GREEN}successfully{Style.RESET_ALL}.")
+        return new_deck_name
 
     except:
         pass
@@ -394,7 +395,7 @@ def edit_existing_flashcard(deck_name):
         pass
 
 
-def update_card(deck_name, old_card, new_card):
+def update_deck(deck_name, card_list):
     """
     Edits an existing flashcard in the specified deck.
 
@@ -405,19 +406,12 @@ def update_card(deck_name, old_card, new_card):
     None
     """
     try:
-        existing_cards = list_existing_cards(deck_name)
-        
-        for index, card in enumerate(existing_cards):
-            if str(card) == str(old_card):
-                existing_cards[index] = new_card
-                break
-
         with open(get_deck_file_path(deck_name), "w") as f:
-            for card in sorted(existing_cards, key=lambda card: card.front_text):
+            for card in sorted(card_list, key=lambda card: card.front_text):
                 f.write(f"{card.front_text}|{card.back_text}|{card.card_strength}|{card.review_interval}\n")
 
-    except:
-        pass
+    except Exception as e:
+        print(f"Error while updating deck: {e}")
 
 
 def exit_program_check(input_to_check):

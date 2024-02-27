@@ -115,7 +115,7 @@ def edit_existing_deck():
                 action_choice_list = list(range(1, 6))
                 action_choice = get_choice(action_choice_list)
                 if action_choice == 1:
-                    change_deck_name(existing_decks[deck_choice - 1])
+                    existing_decks[deck_choice - 1] = change_deck_name(existing_decks[deck_choice - 1])
 
                 elif action_choice == 2:
                     add_new_flashcard(existing_decks[deck_choice - 1])
@@ -158,35 +158,40 @@ def initiate_deck_review():
             print_deck_table(existing_decks)
             deck_choice = get_choice(deck_choice_list)
 
+            existing_cards = list_existing_cards(existing_decks[deck_choice - 1])
+
+            if not existing_cards:
+                print(Fore.YELLOW + "This Deck is empty." + Style.RESET_ALL)
+                print(Fore.YELLOW + "Choose '2. Edit Deck' to start adding Flashcards." + Style.RESET_ALL)
+                print()
+                break
+
             while True:
-                existing_cards = list_existing_cards(existing_decks[deck_choice - 1])
+                index = random.choice(range(len(existing_cards)))
+                card = existing_cards[index]
 
-                if not existing_cards:
-                    print(Fore.YELLOW + "This Deck is empty." + Style.RESET_ALL)
-                    print(Fore.YELLOW + "Choose '2. Edit Deck' to start adding Flashcards." + Style.RESET_ALL)
-                    print()
-                    break
-
-                old_card = new_card = random.choice(existing_cards)
-
-                if new_card.review_interval == 1:
-                    print(f"\nFront: {new_card.front_text}")
+                if card.review_interval == 1:
+                    print(f"\nFront: {card.front_text}")
                     answer = get_card_back_text()
 
-                    if answer.lower() == new_card.back_text.lower():
+                    if answer.lower() == card.back_text.lower():
                         print(Fore.GREEN + "Correct!" + Style.RESET_ALL)
-                        new_card.card_strength += 1
-                        new_card.review_interval = new_card.card_strength * 2
+                        card.card_strength += 1
+                        card.review_interval = card.card_strength * 2
                     else:
-                        print(Fore.RED + "Incorrect. The correct back_text is:" + Style.RESET_ALL, new_card.back_text)
-                        new_card.card_strength = 1
-                        new_card.review_interval = 1
+                        print(Fore.RED + "Incorrect. The correct back_text is:" + Style.RESET_ALL, card.back_text)
+                        card.card_strength = 1
+                        card.review_interval = 1
                 else:
-                    new_card.review_interval -= 1
+                    card.review_interval -= 1
+                    
+                existing_cards[index] = card
+                
+                
 
-                update_card(existing_decks[deck_choice - 1], old_card, new_card)
 
     except BackToMainMenu:
+        update_deck(existing_decks[deck_choice - 1], existing_cards)
         print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
 
 
