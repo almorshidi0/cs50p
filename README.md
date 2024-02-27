@@ -4,7 +4,7 @@ This repository contains my solutions and the final project for CS50's Introduct
 
 ## Course Materials
 
-CS50's Introduction to Programming with Python: <https://cs50.harvard.edu/python/2022/>
+CS50's Introduction to Programming with Python: [CS50 Python](https://cs50.harvard.edu/python/2022/)
 
 ## Repository Description
 
