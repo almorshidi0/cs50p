@@ -179,7 +179,7 @@ def get_deck_name():
     str: User's input for the new deck name.
     """
     while True:
-        deck_name = input(f"{Fore.YELLOW}Deck Name:{Style.RESET_ALL} ").strip()  # Added color to the prompt
+        deck_name = input(f"{Fore.YELLOW}Deck Name:{Style.RESET_ALL} ").strip().replace(" ", "_")  # Added color to the prompt
         exit_program_check(deck_name)
         back_to_main_menu_check(deck_name)
         if not is_valid_deck_name_format(deck_name):
