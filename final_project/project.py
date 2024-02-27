@@ -73,7 +73,7 @@ def create_new_deck():
     try:
         deck_name = get_deck_name()
 
-        with open(get_deck_file_path(deck_name), "w"):
+        with open(deck_file_path(deck_name), "w"):
             pass
 
         print(Fore.GREEN + f"Deck '{deck_name}' was added successfully." + Style.RESET_ALL)

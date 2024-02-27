@@ -70,7 +70,7 @@ COMMAND_LIST = [f"{GREEN}:q{RESET}", f"{GREEN}:m{RESET}"]
 DECK_COLLECTION_PATH = "./collection/"
 
 
-def get_deck_file_path(deck_name):
+def deck_file_path(deck_name):
     """
     Returns the file path for a deck with the given name.
 
@@ -155,9 +155,10 @@ def get_choice(choice_list):
     """
     choice_list.extend(COMMAND_LIST)
     while True:
-        choice = input(f"{Fore.YELLOW}Your choice:{Style.RESET_ALL} ").strip()  # Added color to the prompt
-        exit_program_check(choice.lower())
-        back_to_main_menu_check(choice.lower())
+        choice = input(f"{Fore.YELLOW}Your choice:{Style.RESET_ALL} ").strip().lower()  # Added color to the prompt
+        print()
+        exit_program_check(choice)
+        back_to_main_menu_check(choice)
         try:
             choice = int(choice)
             
@@ -257,7 +258,7 @@ def list_existing_cards(deck_name):
     """
     existing_cards = []
     try:
-        with open(get_deck_file_path(deck_name)) as f:
+        with open(deck_file_path(deck_name)) as f:
             for line in f:
                 if line.startswith("#") or line.isspace() or line == "":
                     continue
@@ -327,14 +328,14 @@ def change_deck_name(old_deck_name):
     """
     try:
         new_deck_name = get_deck_name()
-        old_file_path = get_deck_file_path(old_deck_name)
-        new_file_path = get_deck_file_path(new_deck_name)
+        old_file_path = deck_file_path(old_deck_name)
+        new_file_path = deck_file_path(new_deck_name)
         os.rename(old_file_path, new_file_path)
         print(f"Deck '{old_deck_name}' changed to {new_deck_name} {Fore.GREEN}successfully{Style.RESET_ALL}.")
         return new_deck_name
 
-    except:
-        pass
+    except Exception as e:
+        raise e
 
 
 def add_new_flashcard(deck_name):
@@ -347,16 +348,19 @@ def add_new_flashcard(deck_name):
     Returns:
     None
     """
-    print("Enter card data: ")
-    card_front_text = get_card_front_text(deck_name)
-    card_back_text = get_card_back_text()
+    try:
+        print("Enter card data: ")
+        card_front_text = get_card_front_text(deck_name)
+        card_back_text = get_card_back_text()
 
-    existing_cards = list_existing_cards(deck_name)
-    existing_cards.append(Flashcard(card_front_text, card_back_text))
+        existing_cards = list_existing_cards(deck_name)
+        existing_cards.append(Flashcard(card_front_text, card_back_text))
 
-    with open(get_deck_file_path(deck_name), "w") as f:
-        for card in sorted(existing_cards, key=lambda card: card.front_text):
-            f.write(f"{card.front_text}|{card.back_text}|{card.card_strength}|{card.review_interval}\n")
+        with open(deck_file_path(deck_name), "w") as f:
+            for card in sorted(existing_cards, key=lambda card: card.front_text):
+                f.write(f"{card.front_text}|{card.back_text}|{card.card_strength}|{card.review_interval}\n")
+    except Exception as e:
+        raise e
 
 
 def edit_existing_flashcard(deck_name):
@@ -387,12 +391,12 @@ def edit_existing_flashcard(deck_name):
 
         existing_cards[card_choice - 1] = Flashcard(card_front_text, card_back_text)
 
-        with open(get_deck_file_path(deck_name), "w") as f:
+        with open(deck_file_path(deck_name), "w") as f:
             for card in sorted(existing_cards, key=lambda card: card.front_text):
                 f.write(f"{card.front_text}|{card.back_text}|{card.card_strength}|{card.review_interval}\n")
 
-    except:
-        pass
+    except Exception as e:
+        raise e
 
 
 def update_deck(deck_name, card_list):
@@ -406,7 +410,7 @@ def update_deck(deck_name, card_list):
     None
     """
     try:
-        with open(get_deck_file_path(deck_name), "w") as f:
+        with open(deck_file_path(deck_name), "w") as f:
             for card in sorted(card_list, key=lambda card: card.front_text):
                 f.write(f"{card.front_text}|{card.back_text}|{card.card_strength}|{card.review_interval}\n")
 
