@@ -1,356 +1,294 @@
 import random
-import sys
+import os
+from flashcard_class import Flashcard
+from flashcard_utilities import *
+from colorama import Fore, Style
 
-# Card object representing a flashcard
-class Card:
-    def __init__(self, question="Type a question here", answer="Type the answer to the question", strength=1, interval=1):
-        """
-        Initialize a new flashcard.
 
-        Parameters:
-        - question (str): The question on the flashcard.
-        - answer (str): The answer to the flashcard question.
-        - strength (int): The strength of the flashcard for spaced repetition.
-        - interval (int): The review interval for spaced repetition.
+def welcome_user():
+    """
+    Prints the welcome statement for the flashcard review program.
+    """
+    print(Fore.GREEN + PROGRAM_WELCOME_STATEMENT + Style.RESET_ALL)
 
-        Returns:
-        None
-        """
-        self.question   = question
-        self.answer     = answer
-        self.strength   = strength  # Card strength
-        self.interval   = interval # Review interval for spaced repitition
-        
-    def __str__(self):
-        """
-        Return a formatted string representation of the flashcard.
 
-        Returns:
-        str: Formatted string representation of the flashcard.
-        """
-        return f"{self.question} --> {self.answer} (Strength: {self.strength}, Interval: {self.interval})"
-    
-    # Property and setter methods for encapsulation
-    
-    @property
-    def question(self):
-        return self._question
-    
-    @question.setter
-    def question(self, question):
-        self._question = question
-    
-    @property
-    def answer(self):
-        return self._answer
-    
-    @answer.setter
-    def answer(self, answer):
-        self._answer = answer
-    
-    @property
-    def strength(self):
-        return self._strength
-    
-    @strength.setter
-    def strength(self, strength):
-        self._strength = strength
-        
-    @property
-    def interval(self):
-        return self._interval
-    
-    @interval.setter
-    def interval(self, interval):
-        self._interval = interval
+def initialize_collection():
+    """
+    Creates the collection directory if it doesn't exist.
+    """
+    if not os.path.exists(DECK_COLLECTION_PATH):
+        os.makedirs(DECK_COLLECTION_PATH)
     
 
-# Check if file exists and is valid
-def is_valid_flashcards_file(filename):
+def main_menu():
     """
-    Check if the file exists and contains valid flashcard data.
-
-    Parameters:
-    - filename (str): The name of the file.
-
-    Returns:
-    bool: True if the file exists and is valid, False otherwise.
+    Displays the main menu of the flashcard review program and handles user choices.
     """
-    if ".txt" not in filename:
-        return False
-    try:
-        with open(filename) as f:
-            # Check if file contains valid card data
-            for line in f:
-                if line.startswith("#") or line.isspace() or line == "":
-                    continue  # Skip comment lines, white space lines, and empty lines
-                question, answer, strength, interval = line.strip().split("|")
-                strength = int(strength)
-                interval = int(interval)
-                pass
-            return True
-    except FileNotFoundError:
-        return False
-    except ValueError:
-        return False
-
-# Create a new file with initial content
-def create_new_file(filename):
-    """
-    Create a new flashcard file with initial content.
-
-    Parameters:
-    - filename (str): The name of the file.
-
-    Returns:
-    None
-    """
-    with open(filename, "w") as f:
-        f.write("# This is a flashcard file.\n")
-        f.write("# Add your cards in the format: question,answer,strength,interval")
-
-# Load cards from a file
-def load_cards(filename):
-    """
-    Load flashcards from a file.
-
-    Parameters:
-    - filename (str): The name of the file.
-
-    Returns:
-    list: List of Card objects representing flashcards.
-    """
-    cards = []
-    if is_valid_flashcards_file(filename):
-        with open(filename, "r") as f:
-            for line in f:
-                if line.startswith("#") or line.isspace() or line == "":
-                    continue  # Skip comment lines, white space lines, and empty lines
-                question, answer , strength, interval = line.strip().split("|")
-                strength = int(strength)
-                interval = int(interval)
-                cards.append(Card(question, answer, strength, interval))
-    return cards
-
-# Save cards to a file
-def save_cards(cards, filename):
-    """
-    Save flashcards to a file.
-
-    Parameters:
-    - cards (list): List of Card objects representing flashcards.
-    - filename (str): The name of the file.
-
-    Returns:
-    None
-    """
-    with open(filename, "w") as f:
-        for card in cards:
-            f.write(f"{card.question}|{card.answer}|{card.strength}|{card.interval}\n")
-
-# Review cards until user quits
-def review_cards(cards):
-    """
-    Review flashcards until the user decides to quit.
-
-    Parameters:
-    - cards (list): List of Card objects representing flashcards.
-
-    Returns:
-    None
-    """
-    again = True
-    while again and not cards ==[]:
-        card = random.choice(cards)
-        if card.interval == 1:
-            print(f"\nQuestion: {card.question}")
-            answer = input("Your answer (:q to return to the previous menu): ").strip()
-            if answer.lower() == card.answer.lower():
-                print("Correct!")
-                # Update card's strength and review interval based on performance
-                card.strength += 1
-                card.interval = card.strength * 2
-            elif answer.lower() == ":q":
-                again = False
-            else:
-                print("Incorrect. The answer is:", card.answer)
-                # Reset card's strength and review interval for incorrect answers
-                card.strength = 1
-                card.interval = 1
-        else:
-            card.interval -= 1
-
-# Add a new card
-def add_card(cards):
-    """
-    Add a new flashcard to the list.
-
-    Parameters:
-    - cards (list): List of Card objects representing flashcards.
-
-    Returns:
-    None
-    """
-    question = answer = "|"
-    while "|" in question:
-        question = input("Enter the question: ").strip()
-        if "|" in question:
-            print("The '|' character isn't allowed.")
-    while "|" in answer:
-        answer = input("Enter the answer: ").strip()
-        if "|" in answer:
-            print("The '|' character isn't allowed.")
-    cards.append(Card(question, answer))
-    print("Card added successfully!")
-
-# Edit an existing card
-def edit_card(cards):
-    """
-    Edit an existing flashcard.
-
-    Parameters:
-    - cards (list): List of Card objects representing flashcards.
-
-    Returns:
-    None
-    """
-    if not cards:
-        print("No cards available to edit.")
-        return
-    for i, card in enumerate(cards):
-        print(f"{i+1}. {card.question}")
-
-    choice = int(input("Enter the card number to edit: ").strip()) - 1
-    if 0 <= choice < len(cards):
-        new_question = new_answer = "|"
-        while "|" in new_question or new_question == "":
-            new_question = input("Enter the new question: ").strip() or cards[choice].question
-            if "|" in new_question:
-                print("The '|' character isn't allowed.")
-        while "|" in new_answer or new_answer == "":
-            new_answer = input("Enter the new answer: ").strip() or cards[choice].answer
-            if "|" in new_answer:
-                print("The '|' character isn't allowed.")
-        cards[choice] = Card(new_question, new_answer)
-        print("Card edited successfully!")
-    else:
-        print("Invalid card number.")
-
-# Track overall progress
-def track_progress(cards):
-    """
-    Track the overall progress of flashcard review.
-
-    Parameters:
-    - cards (list): List of Card objects representing flashcards.
-
-    Returns:
-    None
-    """
-    total_cards = len(cards)
-    reviewed_cards = sum(1 for card in cards if card.strength > 1)  # Count cards that have been reviewed more than once
-
-    if total_cards == 0:
-        print("No cards available for progress tracking.")
-    elif reviewed_cards == 0:
-        print("No cards have been reviewed yet.")
-    else:
-        progress_percentage = (reviewed_cards / total_cards) * 100
-        print(f"Overall Progress: {reviewed_cards}/{total_cards} cards reviewed ({progress_percentage:.2f}%).")
-
-# Main program loop
-def main():
-    """
-    Main program loop for flashcard management.
-
-    Returns:
-    None
-    """
-    # Welcome the user
-    print("===== Flashcard Review Program =====")
-    print("Welcome to an interactive learning experience!")
-    
     while True:
-        done = False # A flag to determine wether to close the current file
-        new = False # A flag to determine wether a file is new
-        # Get filename from user
-        filename = input("Enter the filename for flashcards (:n creates a new file, :q exits the program): ").strip()
-
-        # Quit the program on user's demand
-        if filename.lower() == ":q":
-            print("Exiting the Flashcard Review Program. Goodbye!")
-            break
-        # Handle new file creation
-        elif filename.lower() == ":n":
-            new = True
-            new_filename = input("Enter a filename for the new file: ").strip()
-            if ".txt" not in new_filename:
-                new_filename = new_filename + ".txt"
-            create_new_file(new_filename)
-            filename = new_filename
-        # Check if existing file is valid
-        else:
-            if ".txt" not in filename:
-                filename = filename + ".txt"
-            if not is_valid_flashcards_file(filename):
-                filename = filename.replace(".txt", "")
-                sys.exit(f"Error: Invalid file '{filename}'.")
+        try:
+            print(MAIN_MENU_STATEMENT)
+            choice_list = list(range(1, 8))
+            choice = get_choice(choice_list)
+            if choice == 1:
+                create_new_deck()
+                print()
                 
-        while not done:
-            cards = []
-            # Load cards from existing file (if not new)
-            if not new:
-                cards = load_cards(filename)
-                if cards == []:
-                    print("File is empty.")
-                while not done:
-                    print("\nMenu:")
-                    print("1. Review cards")
-                    print("2. Add a card")
-                    print("3. Edit a card")
-                    print("4. Track progress")
-                    print("5. Close file")
-
-                    choice = input("Enter your choice: ").strip()
-
-                    if choice == "1":
-                        review_cards(cards)
-                        # Save updated cards after review
-                        save_cards(cards, filename)
-                    elif choice == "2":
-                        add_card(cards)
-                        # Save cards after adding a new one
-                        save_cards(cards, filename)
-                    elif choice == "3":
-                        edit_card(cards)
-                        # Save cards after editing
-                        save_cards(cards, filename)
-                    elif choice == "4":
-                        track_progress(cards)
-                    elif choice == "5":
-                        print("Closing the flashcard file.")
-                        done = True
-                    else:
-                        print("Invalid choice.")
-            else:
-                while (not done) and new:
-                    print("\nMenu:")
-                    print("1. Add a card")
-                    print("2. Close file")
+            elif choice == 2:
+                edit_existing_deck()
+                print()
+                
+            elif choice == 3:
+                initiate_deck_review()
+                print()
+            
+            elif choice == 4:
+                explore_and_review_decks()
+                print()
                     
-                    choice = input("Enter your choice: ").strip()
+            elif choice == 5:
+                display_deck_statistics()
+                print()
+            
+            elif choice == 6:
+                display_help_information()
+                print()
+                
+            elif choice == 7:
+                raise KeyboardInterrupt
+        
+        except BackToMainMenu:
+            print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
+        
 
-                    if choice == "1":
-                        add_card(cards)
-                        # Save cards after adding a new one
-                        save_cards(cards, filename)
-                        new = False
-                    elif choice == "2":
-                        print("Closing the flashcard file.")
-                        done = True
+def create_new_deck():
+    """
+    Creates a new deck for flashcards.
+
+    This function prompts the user to input a unique deck name, creates a new deck file, and prints a success message.
+    The user is then guided to choose '2. Edit Deck' to start adding cards to the newly created deck.
+
+    Returns:
+    None
+    """
+    try:
+        deck_name = get_deck_name()
+
+        with open(get_deck_file_path(deck_name), "w"):
+            pass
+
+        print(Fore.GREEN + f"Deck '{deck_name}' was added successfully." + Style.RESET_ALL)
+        print(Fore.GREEN + f"Next: Choose '2. Edit Deck' to start adding cards to the new Deck '{deck_name}'." + Style.RESET_ALL)
+
+    except BackToMainMenu:
+        print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
+
+
+def edit_existing_deck():
+    """
+    Allows the user to edit an existing flashcard deck. The user can choose a deck, then select an action:
+    1. Edit the deck name.
+    2. Add a new flashcard to the deck.
+    3. Edit an existing flashcard in the deck.
+
+    This function handles the interactive process of deck editing, guiding the user through the available options.
+
+    Returns:
+    None
+    """
+    try:
+        while True:
+            existing_decks = list_existing_decks()
+
+            if not existing_decks:
+                print(Fore.YELLOW + "The Decks collection is empty." + Style.RESET_ALL)
+                print(Fore.YELLOW + "Choose '1. Add Deck' to start adding Decks." + Style.RESET_ALL)
+                print()
+                return
+
+            print("Choose a deck to edit: ")
+            deck_choice_list = list(range(1, len(existing_decks) + 1))
+            print_deck_table(existing_decks)
+            deck_choice = get_choice(deck_choice_list)
+
+            while True:
+                print(EDIT_DECK_MENU_STATEMENT)
+                action_choice_list = list(range(1, 6))
+                action_choice = get_choice(action_choice_list)
+                if action_choice == 1:
+                    change_deck_name(existing_decks[deck_choice - 1])
+
+                elif action_choice == 2:
+                    add_new_flashcard(existing_decks[deck_choice - 1])
+
+                elif action_choice == 3:
+                    edit_existing_flashcard(existing_decks[deck_choice - 1])
+
+                elif action_choice == 4:
+                    break
+
+                elif action_choice == 5:
+                    raise BackToMainMenu
+
+    except BackToMainMenu:
+        print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
+
+
+def initiate_deck_review():
+    """
+    Initiate the flashcard review process.
+
+    This function allows the user to review flashcards from a selected deck.
+    If the deck or flashcards are not available, appropriate messages are displayed.
+
+    Returns:
+    None
+    """
+    try:
+        while True:
+            existing_decks = list_existing_decks()
+
+            if not existing_decks:
+                print(Fore.YELLOW + "The Decks collection is empty." + Style.RESET_ALL)
+                print(Fore.YELLOW + "Choose '1. Add Deck' to start adding Decks." + Style.RESET_ALL)
+                print()
+                return
+
+            print("Choose a deck to review: ")
+            deck_choice_list = list(range(1, len(existing_decks) + 1))
+            print_deck_table(existing_decks)
+            deck_choice = get_choice(deck_choice_list)
+
+            while True:
+                existing_cards = list_existing_cards(existing_decks[deck_choice - 1])
+
+                if not existing_cards:
+                    print(Fore.YELLOW + "This Deck is empty." + Style.RESET_ALL)
+                    print(Fore.YELLOW + "Choose '2. Edit Deck' to start adding Flashcards." + Style.RESET_ALL)
+                    print()
+                    break
+
+                old_card = new_card = random.choice(existing_cards)
+
+                if new_card.review_interval == 1:
+                    print(f"\nFront: {new_card.front_text}")
+                    answer = get_card_back_text()
+
+                    if answer.lower() == new_card.back_text.lower():
+                        print(Fore.GREEN + "Correct!" + Style.RESET_ALL)
+                        new_card.card_strength += 1
+                        new_card.review_interval = new_card.card_strength * 2
                     else:
-                        print("Invalid choice.")
+                        print(Fore.RED + "Incorrect. The correct back_text is:" + Style.RESET_ALL, new_card.back_text)
+                        new_card.card_strength = 1
+                        new_card.review_interval = 1
+                else:
+                    new_card.review_interval -= 1
+
+                update_card(existing_decks[deck_choice - 1], old_card, new_card)
+
+    except BackToMainMenu:
+        print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
 
 
+def explore_and_review_decks():
+    """
+    Allows the user to explore and review flashcard decks.
+
+    This function prompts the user to choose a deck from the existing collection.
+    If the selected deck has flashcards, it displays them in a table format for review.
+    If the deck or flashcards are not available, appropriate messages are displayed.
+
+    Returns:
+    None
+    """
+    try:
+        while True:
+            existing_decks = list_existing_decks()
+
+            if not existing_decks:
+                print(Fore.YELLOW + "The Decks collection is empty." + Style.RESET_ALL)
+                print(Fore.YELLOW + "Choose '1. Add Deck' to start adding Decks." + Style.RESET_ALL)
+                print()
+                return
+
+            print("Choose a deck to review: ")
+            deck_choice_list = list(range(1, len(existing_decks) + 1))
+            print_deck_table(existing_decks)
+            deck_choice = get_choice(deck_choice_list)
+            
+            existing_cards = list_existing_cards(existing_decks[deck_choice - 1])
+
+            if not existing_cards:
+                print(Fore.YELLOW + "This Deck is empty." + Style.RESET_ALL)
+                print(Fore.YELLOW + "Choose '2. Edit Deck' to start adding Flashcards." + Style.RESET_ALL)
+                print()
+                break
+            
+            print(Fore.GREEN + "Flashcards in the selected deck:" + Style.RESET_ALL)
+            print_card_table(existing_cards)
+
+    except BackToMainMenu:
+        print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
+
+def display_deck_statistics():
+    """
+    Display statistics for the selected deck.
+
+    This function provides statistics on the progress of reviewing flashcards in a selected deck.
+    It shows the total number of cards, the number of cards reviewed, and the overall progress.
+
+    Returns:
+    None
+    """
+    try:
+        while True:
+            existing_decks = list_existing_decks()
+
+            # Check if there are existing decks
+            if not existing_decks:
+                print(Fore.YELLOW + "The Decks collection is empty." + Style.RESET_ALL)
+                print(Fore.YELLOW + "Choose '1. Add Deck' to start adding Decks." + Style.RESET_ALL)
+                print()
+                return
+
+            print("Choose a deck to view statistics: ")
+            deck_choice_list = list(range(1, len(existing_decks) + 1))
+            print_deck_table(existing_decks)
+            deck_choice = get_choice(deck_choice_list)
+
+            existing_cards = list_existing_cards(existing_decks[deck_choice - 1])
+            total_cards = len(existing_cards)
+            reviewed_cards = sum(1 for card in existing_cards if card.card_strength > 1)
+
+            if total_cards == 0:
+                print(Fore.YELLOW + "No cards available for progress tracking." + Style.RESET_ALL)
+            elif reviewed_cards == 0:
+                print(Fore.YELLOW + "No cards have been reviewed yet." + Style.RESET_ALL)
+            else:
+                progress_percentage = (reviewed_cards / total_cards) * 100
+                print(Fore.CYAN + f"Overall Progress: {reviewed_cards}/{total_cards} cards reviewed ({progress_percentage:.2f}%)." + Style.RESET_ALL)
+
+    except BackToMainMenu:
+        print(Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
+    
+
+def display_help_information():
+    print(PROGRAM_WELCOME_STATEMENT)
+
+
+def main():
+    welcome_user()
+    initialize_collection()
+    while True:
+        try:
+            main_menu()
+        
+        except KeyboardInterrupt:
+            print()
+            exit_program()
+        except EOFError:
+            print("\n" + Fore.BLUE + "Returning to the main menu..." + Style.RESET_ALL)
+            
+    
 if __name__ == "__main__":
     main()
