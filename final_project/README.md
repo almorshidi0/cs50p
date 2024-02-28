@@ -6,7 +6,7 @@ Welcome to the **Flashcard Review Program**, a comprehensive and user-friendly l
 
 ## Video Demo
 
-To get a visual demonstration of the Flashcard Review Program, please watch this [video demo](#). This video offers a walkthrough of the program, showcasing key features such as card creation, editing, reviewing, and progress tracking. The demo aims to provide a hands-on understanding of the program's functionalities.
+To get a visual demonstration of the Flashcard Review Program, please watch this [Video Demo](https://youtu.be/gfnoaMo5MmI). This video offers a walkthrough of the program, showcasing key features such as card creation, editing, reviewing, and progress tracking. The demo aims to provide a hands-on understanding of the program's functionalities.
 
 ## Project Overview
 
